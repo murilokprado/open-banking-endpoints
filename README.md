@@ -7,7 +7,7 @@ From a dev to another.
 ## Developer site companies
 |  | Name |  Developers link 
 | ------ | ------ | ----- |
-| <img src="https://forum.developers.bb.com.br/uploads/default/optimized/1X/6beaeaa002fe312cdd592b3046d2c8e96233ce33_2_32x32.png" width="15"> | Banco do Brasil | [Developer site](https://apoio.developers.bb.com.br/referency)
+| <img src="/logo/bb-favicon.png" width="15"> | Banco do Brasil | [Developer site](https://apoio.developers.bb.com.br/referency)
 | <img src="https://pbs.twimg.com/profile_images/1322219578362126337/kL21rQZs_400x400.png" width="15"> | Banrisul | [Developer site](https://developers.banrisul.com.br/pages/allApis.html#openbanking)
 | <img src="https://developers.bradesco.com.br/favicon.ico" width="15"> | Bradesco | [Developer site](https://developers.bradesco.com.br/)
 | <img src="https://desenvolvedores.caixa.gov.br/template_images/favicon.ico" width="15"> | Caixa | [Developer site](https://desenvolvedores.caixa.gov.br/api-catalog)
@@ -22,7 +22,7 @@ Here you're find endpoints api of banks and financial companies, I'd like the he
 #### Personal Loan
 |  | Personal loan 
 | ------ | ------ | 
-| <img src="https://forum.developers.bb.com.br/uploads/default/optimized/1X/6beaeaa002fe312cdd592b3046d2c8e96233ce33_2_32x32.png" width="15" title="Banco do Brasil"> | [link to json](https://opendata.api.bb.com.br/open-banking/products-services/v1/personal-loans)
+| <img src="/logo/bb-favicon.png" width="15" title="Banco do Brasil"> | [link to json](https://opendata.api.bb.com.br/open-banking/products-services/v1/personal-loans)
 | <img src="https://pbs.twimg.com/profile_images/1322219578362126337/kL21rQZs_400x400.png" width="15" title="Banrisul"> | [link to json](https://openbanking.banrisul.com.br/open-banking/products-services/v1/personal-loans)
 | <img src="https://developers.bradesco.com.br/favicon.ico" width="15" title="Bradesco"> | [link to json](https://api.bradesco.com/bradesco/open-banking/products-services/v1/personal-loans)
 | <img src="https://desenvolvedores.caixa.gov.br/template_images/favicon.ico" width="15" title="Caixa"> | [empty](empty)
