@@ -37,8 +37,11 @@ Aqui você irá encontrar os endpoints da instituições financeiras referentes 
 | <img src="logos/itau-favicon.ico" width="15" title="Itaú"> | [link to json](https://api.itau/open-banking/products-services/v1/personal-loans)
 | <img src="logos/santander-favicon.png" width="15" title="Santander"> | [empty](empty)
 
-## Contribution
+## Contribuição
 Para melhorarmos a informação gostaria de contar com a contribuição da comunidade, assim podemos criar um ambiente onde irá facilitar o nosso dia-a-dia como desenvolvedores e irá estimular a disseminação do conhecimento. Sinta-se livre para contribuir e ajudar, é isso que mantêm nossa comunidade em crescimento!
+
+## Evolução
+Pode ser disponibilizado também neste repositório algo como uma HUB de dados (provedor) de links, listando quais bancos e quais seus endpoints.
 
 ## Licença
 MIT 
