@@ -1,4 +1,4 @@
-![](../logos/logo.png)
+![](../src/main/resources/static/logos/logo.png)
 
 [Read this page in Portuguese](../README.md)
 # Openbanking HUB OS (Docs, information & API endpoints)
