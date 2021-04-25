@@ -1,5 +1,6 @@
 package io.openbanking.participants;
 
+import io.openbanking.participants.payload.Participants;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -27,6 +28,11 @@ public class ParticipantsController {
     })
     @GetMapping
     public List<Object> getAll() {
+        return participantsClient.getParticipantsObject();
+    }
+
+    @GetMapping("o")
+    public List<Participants> getParticipants() {
         return participantsClient.getParticipants();
     }
 }
