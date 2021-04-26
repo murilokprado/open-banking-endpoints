@@ -1,21 +1,26 @@
 package io.openbanking.participants.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class AuthorisationServer {
 
-    private String AuthorisationServerId;
-    private String OrganisationId;
-    private Boolean AutoRegistrationSupported;
-    private List<ApiResource> ApiResources;
-    private String CustomerFriendlyDescription;
-    private String CustomerFriendlyLogoUri;
-    private String CustomerFriendlyName;
-    private String DeveloperPortalUri;
-    private String TermsOfServiceUri;
-    private String NotificationWebhook;
-    private String NotificationWebhookStatus;
-    private String OpenIDDiscoveryDocument;
-    private String PayloadSigningCertLocationUri;
-    private String ParentAuthorisationServerId;
+    private String authorisationServerId;
+    private String organisationId;
+    private Boolean autoRegistrationSupported;
+    private List<ApiResource> apiResources;
+    private String customerFriendlyDescription;
+    private String customerFriendlyLogoUri;
+    private String customerFriendlyName;
+    private String developerPortalUri;
+    private String termsOfServiceUri;
+    private String notificationWebhook;
+    private String notificationWebhookStatus;
+    private String openIDDiscoveryDocument;
+    private String payloadSigningCertLocationUri;
+    private String parentAuthorisationServerId;
 }

@@ -1,11 +1,16 @@
 package io.openbanking.participants.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class OrgDomainClaim {
 
-    private String OrganisationAuthorityDomainClaimId;
-    private String AuthorisationDomainName;
-    private String AuthorityId;
-    private String AuthorityName;
-    private String RegistrationId;
-    private String Status;
+    private String organisationAuthorityDomainClaimId;
+    private String authorisationDomainName;
+    private String authorityId;
+    private String authorityName;
+    private String registrationId;
+    private String status;
 }

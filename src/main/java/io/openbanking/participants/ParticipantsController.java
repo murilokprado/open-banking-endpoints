@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,11 +28,6 @@ public class ParticipantsController {
             @ApiResponse(code = 500, message = "Ocorreu algum erro no servidor"),
     })
     @GetMapping
-    public List<Object> getAll() {
-        return participantsClient.getParticipantsObject();
-    }
-
-    @GetMapping("o")
     public List<Participants> getParticipants() {
         return participantsClient.getParticipants();
     }

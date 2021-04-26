@@ -1,27 +1,33 @@
 package io.openbanking.participants.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
+//@JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
 public class Participants {
 
-    private String OrganisationId;
-    private String Status;
-    private String OrganisationName;
-    private String CreatedOn;
-    private String LegalEntityName;
-    private String CountryOfRegistration;
-    private String CompanyRegister;
-    private String RegistrationNumber;
-    private String RegistrationId;
-    private String RegisteredName;
-    private String AddressLine1;
-    private String AddressLine2;
-    private String City;
-    private String Postcode;
-    private String Country;
-    private String ParentOrganisationReference;
-    private List<Contact> Contacts;
-    private List<AuthorisationServer> AuthorisationServers;
-    private List<OrgDomainClaim> OrgDomainClaims;
-    private List<OrgDomainRoleClaim> OrgDomainRoleClaims;
+    private String organisationId;
+    private String status;
+    private String organisationName;
+    private String createdOn;
+    private String legalEntityName;
+    private String countryOfRegistration;
+    private String companyRegister;
+    private String registrationNumber;
+    private String registrationId;
+    private String registeredName;
+    private String addressLine1;
+    private String addressLine2;
+    private String city;
+    private String postcode;
+    private String country;
+    private String parentOrganisationReference;
+    private List<Contact> contacts;
+    private List<AuthorisationServer> authorisationServers;
+    private List<OrgDomainClaim> orgDomainClaims;
+    private List<OrgDomainRoleClaim> orgDomainRoleClaims;
 }

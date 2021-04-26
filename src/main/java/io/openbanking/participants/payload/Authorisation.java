@@ -1,7 +1,12 @@
 package io.openbanking.participants.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Authorisation {
 
-     private Boolean status;
+     private String status;
      private String memberState;
 }

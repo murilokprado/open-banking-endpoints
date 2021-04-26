@@ -1,7 +1,12 @@
 package io.openbanking.participants.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ApiDiscoveryEndpoint {
 
-    private String ApiDiscoveryId;
-    private String ApiEndpoint;
+    private String apiDiscoveryId;
+    private String apiEndpoint;
 }

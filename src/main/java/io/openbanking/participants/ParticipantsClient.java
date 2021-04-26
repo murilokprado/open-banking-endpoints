@@ -12,7 +12,4 @@ public interface ParticipantsClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "participants")
     List<Participants> getParticipants();
-
-    @RequestMapping(method = RequestMethod.GET, value = "participants")
-    List<Object> getParticipantsObject();
 }
