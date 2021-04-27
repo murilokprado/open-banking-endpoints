@@ -7,8 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-//@JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
-public class Participants {
+public class Participant {
 
     private String organisationId;
     private String status;
