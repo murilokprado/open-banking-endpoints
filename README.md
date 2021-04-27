@@ -61,5 +61,8 @@ Neste projeto foi implementado o GraphQL para facilitar o acesso das informaçã
 Está disponível um arquivo [insomnia.json](insomnia.json), onde é possível efetuar o upload das requests ao 
 [Insomnia](https://insomnia.rest/download/).
 
+## Acessando a aplicação publicada
+[Swagger on Heroku](https://openbanking-br.herokuapp.com/swagger-ui/index.html#/participants-controller/getParticipantsUsingGET)
+
 ## Licença
 MIT 
