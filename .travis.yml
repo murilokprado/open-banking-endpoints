@@ -1,13 +1,15 @@
-sudo: false
+arch: amd64
+
 language: java
+
+jdk:
+  - oraclejdk11
+
 cache:
   directories:
-    - "$HOME/.cache"
+    - $HOME/.m2
 
-before_install:
-  - cp .travis.settings.xml $HOME/.m2/settings.xml
-
-deploy:
-  provider: script
-  script: "mvn -B -V deploy"
-  skip_cleanup: true
+script:
+  - java --version
+  - ./mvnw clean install
+  - ./mvnw test
