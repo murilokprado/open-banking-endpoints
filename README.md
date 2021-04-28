@@ -2,7 +2,7 @@
 
 [Read this page in English](en-us/README.md)
 
-# HUB Openbanking OS (Documentações, informações & API endpoints) 
+# HUB Openbanking OS (Documentações, informações & API endpoints) [![Build Status](https://travis-ci.com/murilokprado/open-banking-endpoints.svg?branch=main)](https://travis-ci.com/murilokprado/open-banking-endpoints)
 O Objetivo deste repositório é centralizar as informações de API para facilitar a vida dos desenvolvedores em sua busca pela informação de endpoints.
 
 De um dev para outro.

@@ -50,6 +50,7 @@ public class ParticipantServiceImpl implements ParticipantService {
         List<Participant> participants = this.getParticipants();
 
         if (apiFamilyType != null) {
+
             participants = participants.stream()
                     .filter(p -> p.getAuthorisationServers().stream()
                             .flatMap(a -> a.getApiResources().stream())
