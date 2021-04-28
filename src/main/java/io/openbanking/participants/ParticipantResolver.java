@@ -20,6 +20,11 @@ public class ParticipantResolver {
     }
 
     @GraphQLQuery
+    public List<String> apiFamilyTypes() {
+        return participantService.getApiFamilyTypes();
+    }
+
+    @GraphQLQuery
     public List<Participant> participants() {
         return participantService.getParticipants();
     }
