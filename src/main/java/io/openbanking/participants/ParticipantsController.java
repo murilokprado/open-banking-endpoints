@@ -22,7 +22,7 @@ public class ParticipantsController {
         this.participantService = participantService;
     }
 
-    @ApiOperation("Verifica os participantes do openbanking")
+    @ApiOperation("Retorna os participantes do openbanking")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Retorna participantes do openbanking"),
             @ApiResponse(code = 400, message = "Retorna que não existem participantes"),
@@ -33,14 +33,15 @@ public class ParticipantsController {
         return participantService.getParticipants();
     }
 
-    @ApiOperation("Verifica as informações relevantes dos participantes")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Retorna participantes do openbanking"),
-            @ApiResponse(code = 400, message = "Retorna que não existem participantes"),
-            @ApiResponse(code = 500, message = "Ocorreu algum erro no servidor"),
-    })
+    @ApiOperation("Retorna as informações relevantes dos participantes")
     @GetMapping("/relevant_fields")
     public List<ParticipantResponse> participantsRelevantFields(String apiFamilyType) {
         return participantService.getParticipantsRelevantFields(apiFamilyType);
+    }
+
+    @ApiOperation("Retornar as informações relevantes dos participantes")
+    @GetMapping("/api_family_types")
+    public List<String> getApiFamilyTypes() {
+        return participantService.getApiFamilyTypes();
     }
 }

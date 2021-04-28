@@ -1,13 +1,16 @@
 package io.openbanking.participants.service;
 
+import feign.FeignException;
 import io.openbanking.participants.ParticipantClient;
 import io.openbanking.participants.ParticipantFactory;
+import io.openbanking.participants.payload.ApiResource;
 import io.openbanking.participants.payload.Participant;
 import io.openbanking.participants.payload.ParticipantResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
@@ -21,8 +24,25 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
+    public List<String> getApiFamilyTypes() {
+        List<Participant> participants = this.getParticipants();
+
+        return participants.stream()
+                .map(p -> p.getAuthorisationServers().stream()
+                        .flatMap(a -> a.getApiResources().stream())
+                        .map(ApiResource::getApiFamilyType)
+                        .distinct())
+                .flatMap(Stream::distinct)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Participant> getParticipants() {
-        return participantClient.getParticipants();
+        try {
+            return participantClient.getParticipants();
+        } catch (FeignException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
