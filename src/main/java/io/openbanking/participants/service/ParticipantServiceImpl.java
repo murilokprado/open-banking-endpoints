@@ -33,6 +33,7 @@ public class ParticipantServiceImpl implements ParticipantService {
                         .map(ApiResource::getApiFamilyType)
                         .distinct())
                 .flatMap(Stream::distinct)
+                .distinct()
                 .collect(Collectors.toList());
     }
 
