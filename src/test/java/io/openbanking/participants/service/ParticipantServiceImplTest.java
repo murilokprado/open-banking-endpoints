@@ -31,7 +31,6 @@ public class ParticipantServiceImplTest {
 
         assertThat(apiFamilyTypesResponse)
                 .isEqualTo(List.of("channels", "discovery", "admin", "products-services", "other"));
-
     }
     
     private List<Participant> createParticipant() {
