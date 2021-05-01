@@ -2,6 +2,7 @@ package io.openbanking.participants.service;
 
 import feign.FeignException;
 import io.openbanking.participants.ParticipantClient;
+import io.openbanking.participants.ParticipantFactory;
 import io.openbanking.participants.payload.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,9 @@ public class ParticipantServiceImplTest {
 
     @Mock
     private ParticipantClient participantClient;
+
+    @Mock
+    private ParticipantFactory participantFactory;
 
     @Test
     public void shouldGetApiFamilyTypes() {
