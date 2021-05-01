@@ -14,8 +14,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ParticipantServiceImplTest {
@@ -42,6 +43,18 @@ public class ParticipantServiceImplTest {
     @Test(expected = RuntimeException.class)
     public void shouldThrowsGetParticipants() {
         doThrow(FeignException.class).when(participantService.getParticipants());
+    }
+
+    @Test
+    public void shouldGetParticipantsRelevantFields() {
+        when(participantFactory.create(anyList(), any(String.class))).thenReturn(createParticipant());
+
+        List<ParticipantResponse> participantResponses =
+                participantService.getParticipantsRelevantFields(null);
+
+        verify(participantService).getParticipants();
+
+        assertThat(participantResponses.get(0).getCustomerFriendlyName()).isEqualTo("teste");
     }
 
     @Test
