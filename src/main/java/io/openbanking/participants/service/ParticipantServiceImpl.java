@@ -25,7 +25,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public List<String> getApiFamilyTypes() {
-        List<Participant> participants = this.getParticipants();
+        List<Participant> participants = getParticipants();
 
         return participants.stream()
                 .map(p -> p.getAuthorisationServers().stream()
@@ -48,7 +48,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public List<ParticipantResponse> getParticipantsRelevantFields(String apiFamilyType) {
-        List<Participant> participants = this.getParticipants();
+        List<Participant> participants = getParticipants();
 
         if (apiFamilyType != null) {
 
