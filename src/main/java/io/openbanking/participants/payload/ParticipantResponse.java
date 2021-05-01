@@ -3,6 +3,8 @@ package io.openbanking.participants.payload;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class ParticipantResponse {
@@ -11,10 +13,6 @@ public class ParticipantResponse {
     private String customerFriendlyName;
     private String registrationNumber;
     private String registeredName;
-    private String role;
-    private String status;
-    private String apiFamilyType;
-    private Integer apiVersion;
-    private String apiEndpoint;
-    private String developerPortalUri;
+    private List<OrgDomainRoleClaimResponse> orgDomainRoleClaims;
+    private List<AuthorisationServerResponse> authorisationServers;
 }

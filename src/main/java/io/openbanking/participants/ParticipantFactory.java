@@ -3,7 +3,9 @@ package io.openbanking.participants;
 import io.openbanking.participants.payload.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,40 +18,79 @@ public class ParticipantFactory {
         participantResponse.setRegistrationNumber(participant.getRegistrationNumber());
         participantResponse.setRegisteredName(participant.getRegisteredName());
 
-        AuthorisationServer authorisationServer = participant.getAuthorisationServers().stream()
-                .findFirst().orElse(null);
+        String customerFriendlyName = Objects.requireNonNull(participant.getAuthorisationServers().stream()
+                .findFirst()
+                .orElse(null))
+                .getCustomerFriendlyName();
 
-        if (authorisationServer != null) {
-            participantResponse.setCustomerFriendlyName(authorisationServer.getCustomerFriendlyName());
-            participantResponse.setDeveloperPortalUri(authorisationServer.getDeveloperPortalUri());
+        participantResponse.setCustomerFriendlyName(customerFriendlyName);
 
-            ApiResource apiResource = authorisationServer.getApiResources().stream()
-                    .filter(api -> api.getApiFamilyType().equals(apiFamilyType))
-                    .findAny()
-                    .orElse(null);
+        List<OrgDomainRoleClaimResponse> orgDomainRoleClaimResponses = participant.getOrgDomainRoleClaims().stream()
+                .map(this::createOrgDomainRoleClaimResponse)
+                .collect(Collectors.toList());
 
-            if (apiResource != null) {
-                participantResponse.setApiFamilyType(apiResource.getApiFamilyType());
-                participantResponse.setApiVersion(apiResource.getApiVersion());
+        participantResponse.setOrgDomainRoleClaims(orgDomainRoleClaimResponses);
 
-                ApiDiscoveryEndpoint apiDiscoveryEndpoint = apiResource.getApiDiscoveryEndpoints().stream()
-                        .findFirst().orElse(null);
+        List<AuthorisationServerResponse> authorisationServerResponses =  participant.getAuthorisationServers().stream()
+                .map(authorisation -> createAuthorisationServerResponse(authorisation, apiFamilyType))
+                .collect(Collectors.toList());
 
-                if (apiDiscoveryEndpoint != null) {
-                    participantResponse.setApiEndpoint(apiDiscoveryEndpoint.getApiEndpoint());
-                }
-            }
-        }
-
-        OrgDomainRoleClaim orgDomainRoleClaim = participant.getOrgDomainRoleClaims().stream()
-                .findFirst().orElse(null);
-
-        if (orgDomainRoleClaim != null) {
-            participantResponse.setRole(orgDomainRoleClaim.getRole());
-            participantResponse.setStatus(orgDomainRoleClaim.getStatus());
-        }
+        participantResponse.setAuthorisationServers(authorisationServerResponses);
 
         return participantResponse;
+    }
+
+    private OrgDomainRoleClaimResponse createOrgDomainRoleClaimResponse(OrgDomainRoleClaim orgDomainRoleClaim) {
+        OrgDomainRoleClaimResponse orgDomainRoleClaimResponse = new OrgDomainRoleClaimResponse();
+
+        orgDomainRoleClaimResponse.setRole(orgDomainRoleClaim.getRole());
+        orgDomainRoleClaimResponse.setStatus(orgDomainRoleClaim.getStatus());
+
+        return orgDomainRoleClaimResponse;
+    }
+
+    private AuthorisationServerResponse createAuthorisationServerResponse(AuthorisationServer authorisationServer,
+                                                                                String apiFamilyType) {
+            AuthorisationServerResponse authorisationServerResponse = new AuthorisationServerResponse();
+
+            if (authorisationServer != null) {
+
+                authorisationServerResponse.setDeveloperPortalUri(authorisationServer.getDeveloperPortalUri());
+
+                List<ApiResource> apiResources = authorisationServer.getApiResources().stream()
+                        .filter(api -> apiFamilyType == null || api.getApiFamilyType().equals(apiFamilyType))
+                        .collect(Collectors.toList());
+
+                List<ApiResourceResponse> apiResourceResponses = apiResources.stream()
+                        .map(this::createApiResourceResponse)
+                        .collect(Collectors.toList());
+
+                authorisationServerResponse.setApiResourceResponses(apiResourceResponses);
+            }
+
+        return authorisationServerResponse;
+    }
+
+    private ApiResourceResponse createApiResourceResponse(ApiResource apiResource) {
+        ApiResourceResponse apiResourceResponse = new ApiResourceResponse();
+        apiResourceResponse.setApiFamilyType(apiResource.getApiFamilyType());
+        apiResourceResponse.setApiVersion(apiResource.getApiVersion());
+
+        List<ApiDiscoveryEndpointResponse> apiDiscoveryEndpoints = apiResource.getApiDiscoveryEndpoints().stream()
+                .map(this::createApiDiscoveryEndpointResponse)
+                .collect(Collectors.toList());
+
+        apiResourceResponse.setApiDiscoveryEndpoints(apiDiscoveryEndpoints);
+
+        return apiResourceResponse;
+    }
+
+    private ApiDiscoveryEndpointResponse createApiDiscoveryEndpointResponse(ApiDiscoveryEndpoint apiDiscoveryEndpoint) {
+        ApiDiscoveryEndpointResponse apiDiscoveryEndpointResponse = new ApiDiscoveryEndpointResponse();
+
+        apiDiscoveryEndpointResponse.setApiEndpoint(apiDiscoveryEndpoint.getApiEndpoint());
+
+        return apiDiscoveryEndpointResponse;
     }
 
     public List<ParticipantResponse> create(List<Participant> participants, String apiFamilyType) {
