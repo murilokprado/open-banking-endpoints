@@ -14,8 +14,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,6 +27,12 @@ public class ParticipantServiceImplTest {
 
     @Mock
     private ParticipantFactory participantFactory;
+
+    @Mock
+    private List<Participant> participants;
+
+    @Mock
+    private List<ParticipantResponse> participantResponses;
 
     @Test
     public void shouldGetApiFamilyTypes() {
@@ -47,14 +51,94 @@ public class ParticipantServiceImplTest {
 
     @Test
     public void shouldGetParticipantsRelevantFields() {
-        when(participantFactory.create(anyList(), any(String.class))).thenReturn(createParticipant());
+        when(participantService.getParticipants()).thenReturn(participants);
+        when(participantFactory.create(participants, null)).thenReturn(participantResponses);
 
-        List<ParticipantResponse> participantResponses =
-                participantService.getParticipantsRelevantFields(null);
+        participantService.getParticipantsRelevantFields(null);
 
-        verify(participantService).getParticipants();
+        verify(participantFactory).create(participants, null);
+    }
 
-        assertThat(participantResponses.get(0).getCustomerFriendlyName()).isEqualTo("teste");
+    private List<ParticipantResponse> createParticipantsResponse() {
+        ParticipantResponse participantResponse = new ParticipantResponse();
+
+        participantResponse.setOrganisationId("fefac57d-1d50-5615-89b2-0b2d80623a28");
+        participantResponse.setCustomerFriendlyName("Open Banking Cashway");
+        participantResponse.setRegistrationNumber("07853842");
+        participantResponse.setRegisteredName("COOPERATIVA DE CRÉDITO RURAL DE OURO   SULCREDI/OURO");
+        participantResponse.setOrgDomainRoleClaims(createOrgDomainRoleClaimResponse());
+        participantResponse.setAuthorisationServers(createAuthorisationServerResponse());
+
+        return Collections.singletonList(participantResponse);
+    }
+
+    private List<AuthorisationServerResponse> createAuthorisationServerResponse() {
+        AuthorisationServerResponse authorisationServerResponse = new AuthorisationServerResponse();
+
+        authorisationServerResponse.setDeveloperPortalUri("https://api.sulcrediouro.com.br/open-banking/naoseaplica");
+        authorisationServerResponse.setApiResourceResponses(createApiResourceResponse());
+
+        return Collections.singletonList(authorisationServerResponse);
+    }
+
+    private List<ApiResourceResponse> createApiResourceResponse() {
+        return List.of(createApiResourceResponseChannel(), createApiResourceResponseDiscovery());
+    }
+
+    private ApiResourceResponse createApiResourceResponseChannel() {
+        ApiResourceResponse apiResourceResponse = new ApiResourceResponse();
+
+        apiResourceResponse.setApiFamilyType("channels");
+        apiResourceResponse.setApiVersion(1);
+
+        List<ApiDiscoveryEndpointResponse> apiDiscoveryEndpointResponses = List.of(
+                createApiDiscoveryEndpointResponse("https://api.sulcrediouro.com.br/open-banking/channels/v1/branches"),
+                createApiDiscoveryEndpointResponse("https://api.sulcrediouro.com.br/open-banking/channels/v1/electronic-channels"),
+                createApiDiscoveryEndpointResponse("https://api.sulcrediouro.com.br/open-banking/channels/v1/phone-channels"),
+                createApiDiscoveryEndpointResponse("https://api.sulcrediouro.com.br/open-banking/channels/v1/banking-agents"));
+
+        apiResourceResponse.setApiDiscoveryEndpoints(apiDiscoveryEndpointResponses);
+
+        return apiResourceResponse;
+    }
+
+    private ApiResourceResponse createApiResourceResponseDiscovery() {
+        ApiResourceResponse apiResourceResponse = new ApiResourceResponse();
+
+        apiResourceResponse.setApiFamilyType("discovery");
+        apiResourceResponse.setApiVersion(1);
+
+        List<ApiDiscoveryEndpointResponse> apiDiscoveryEndpointResponses = List.of(
+                createApiDiscoveryEndpointResponse("https://api.sulcrediouro.com.br/open-banking/discovery/v1/status"),
+                createApiDiscoveryEndpointResponse("https://api.sulcrediouro.com.br/open-banking/discovery/v1/outages"));
+
+        apiResourceResponse.setApiDiscoveryEndpoints(apiDiscoveryEndpointResponses);
+
+        return apiResourceResponse;
+    }
+
+    private ApiDiscoveryEndpointResponse createApiDiscoveryEndpointResponse(String endpoint) {
+        ApiDiscoveryEndpointResponse apiDiscoveryEndpointResponse = new ApiDiscoveryEndpointResponse();
+
+        apiDiscoveryEndpointResponse.setApiEndpoint(endpoint);
+
+        return apiDiscoveryEndpointResponse;
+    }
+
+    private List<OrgDomainRoleClaimResponse> createOrgDomainRoleClaimResponse() {
+        OrgDomainRoleClaimResponse OrgDomainRoleClaimResponseOne = new OrgDomainRoleClaimResponse();
+        OrgDomainRoleClaimResponseOne.setRole("DADOS");
+        OrgDomainRoleClaimResponseOne.setStatus("Active");
+
+        OrgDomainRoleClaimResponse OrgDomainRoleClaimResponseTwo = new OrgDomainRoleClaimResponse();
+        OrgDomainRoleClaimResponseTwo.setRole("CONTA");
+        OrgDomainRoleClaimResponseTwo.setStatus("Active");
+
+        OrgDomainRoleClaimResponse OrgDomainRoleClaimResponseThree = new OrgDomainRoleClaimResponse();
+        OrgDomainRoleClaimResponseThree.setRole("PAGTO");
+        OrgDomainRoleClaimResponseThree.setStatus("Active");
+
+        return List.of(OrgDomainRoleClaimResponseOne, OrgDomainRoleClaimResponseTwo, OrgDomainRoleClaimResponseThree);
     }
 
     @Test
