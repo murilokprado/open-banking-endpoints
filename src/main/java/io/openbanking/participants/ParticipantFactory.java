@@ -3,7 +3,6 @@ package io.openbanking.participants;
 import io.openbanking.participants.payload.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -31,7 +30,7 @@ public class ParticipantFactory {
 
         participantResponse.setOrgDomainRoleClaims(orgDomainRoleClaimResponses);
 
-        List<AuthorisationServerResponse> authorisationServerResponses =  participant.getAuthorisationServers().stream()
+        List<AuthorisationServerResponse> authorisationServerResponses = participant.getAuthorisationServers().stream()
                 .map(authorisation -> createAuthorisationServerResponse(authorisation, apiFamilyType))
                 .collect(Collectors.toList());
 
@@ -40,39 +39,23 @@ public class ParticipantFactory {
         return participantResponse;
     }
 
-    private OrgDomainRoleClaimResponse createOrgDomainRoleClaimResponse(OrgDomainRoleClaim orgDomainRoleClaim) {
-        OrgDomainRoleClaimResponse orgDomainRoleClaimResponse = new OrgDomainRoleClaimResponse();
-
-        orgDomainRoleClaimResponse.setRole(orgDomainRoleClaim.getRole());
-        orgDomainRoleClaimResponse.setStatus(orgDomainRoleClaim.getStatus());
-
-        return orgDomainRoleClaimResponse;
+    public List<ParticipantResponse> create(List<Participant> participants, String apiFamilyType) {
+        return participants.stream()
+                .map(p -> create(p, apiFamilyType))
+                .collect(Collectors.toList());
     }
 
-    private AuthorisationServerResponse createAuthorisationServerResponse(AuthorisationServer authorisationServer,
-                                                                                String apiFamilyType) {
-            AuthorisationServerResponse authorisationServerResponse = new AuthorisationServerResponse();
+    private ApiDiscoveryEndpointResponse createApiDiscoveryEndpointResponse(ApiDiscoveryEndpoint apiDiscoveryEndpoint) {
+        ApiDiscoveryEndpointResponse apiDiscoveryEndpointResponse = new ApiDiscoveryEndpointResponse();
 
-            if (authorisationServer != null) {
+        apiDiscoveryEndpointResponse.setApiEndpoint(apiDiscoveryEndpoint.getApiEndpoint());
 
-                authorisationServerResponse.setDeveloperPortalUri(authorisationServer.getDeveloperPortalUri());
-
-                List<ApiResource> apiResources = authorisationServer.getApiResources().stream()
-                        .filter(api -> apiFamilyType == null || api.getApiFamilyType().equals(apiFamilyType))
-                        .collect(Collectors.toList());
-
-                List<ApiResourceResponse> apiResourceResponses = apiResources.stream()
-                        .map(this::createApiResourceResponse)
-                        .collect(Collectors.toList());
-
-                authorisationServerResponse.setApiResourceResponses(apiResourceResponses);
-            }
-
-        return authorisationServerResponse;
+        return apiDiscoveryEndpointResponse;
     }
 
     private ApiResourceResponse createApiResourceResponse(ApiResource apiResource) {
         ApiResourceResponse apiResourceResponse = new ApiResourceResponse();
+
         apiResourceResponse.setApiFamilyType(apiResource.getApiFamilyType());
         apiResourceResponse.setApiVersion(apiResource.getApiVersion());
 
@@ -85,17 +68,33 @@ public class ParticipantFactory {
         return apiResourceResponse;
     }
 
-    private ApiDiscoveryEndpointResponse createApiDiscoveryEndpointResponse(ApiDiscoveryEndpoint apiDiscoveryEndpoint) {
-        ApiDiscoveryEndpointResponse apiDiscoveryEndpointResponse = new ApiDiscoveryEndpointResponse();
+    private AuthorisationServerResponse createAuthorisationServerResponse(AuthorisationServer authorisationServer,
+                                                                          String apiFamilyType) {
+        AuthorisationServerResponse authorisationServerResponse = new AuthorisationServerResponse();
 
-        apiDiscoveryEndpointResponse.setApiEndpoint(apiDiscoveryEndpoint.getApiEndpoint());
+        if (authorisationServer != null) {
+            authorisationServerResponse.setDeveloperPortalUri(authorisationServer.getDeveloperPortalUri());
 
-        return apiDiscoveryEndpointResponse;
+            List<ApiResource> apiResources = authorisationServer.getApiResources().stream()
+                    .filter(api -> apiFamilyType == null || api.getApiFamilyType().equals(apiFamilyType))
+                    .collect(Collectors.toList());
+
+            List<ApiResourceResponse> apiResourceResponses = apiResources.stream()
+                    .map(this::createApiResourceResponse)
+                    .collect(Collectors.toList());
+
+            authorisationServerResponse.setApiResourceResponses(apiResourceResponses);
+        }
+
+        return authorisationServerResponse;
     }
 
-    public List<ParticipantResponse> create(List<Participant> participants, String apiFamilyType) {
-        return participants.stream()
-                .map(p -> create(p, apiFamilyType))
-                .collect(Collectors.toList());
+    private OrgDomainRoleClaimResponse createOrgDomainRoleClaimResponse(OrgDomainRoleClaim orgDomainRoleClaim) {
+        OrgDomainRoleClaimResponse orgDomainRoleClaimResponse = new OrgDomainRoleClaimResponse();
+
+        orgDomainRoleClaimResponse.setRole(orgDomainRoleClaim.getRole());
+        orgDomainRoleClaimResponse.setStatus(orgDomainRoleClaim.getStatus());
+
+        return orgDomainRoleClaimResponse;
     }
 }
