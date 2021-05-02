@@ -45,6 +45,44 @@ public class ParticipantFactory {
                 .collect(Collectors.toList());
     }
 
+    public AvailableApiEndpointResponse createAvailableEndpoint(Participant participants, String apiFamilyType) {
+        AvailableApiEndpointResponse availableApiEndpointResponse = new AvailableApiEndpointResponse();
+
+        availableApiEndpointResponse.setOrganisationId(participants.getOrganisationId());
+
+        AuthorisationServer authorisationServers = participants.getAuthorisationServers().stream()
+                .findFirst()
+                .orElse(null);
+
+        if (authorisationServers != null) {
+            availableApiEndpointResponse.setCustomerFriendlyName(authorisationServers.getCustomerFriendlyName());
+
+            ApiResource apiResource = authorisationServers.getApiResources().stream()
+                    .filter(api -> apiFamilyType == null || api.getApiFamilyType().equals(apiFamilyType))
+                    .findFirst()
+                    .orElse(null);
+
+            if (apiResource != null) {
+                availableApiEndpointResponse.setApiFamilyType(apiResource.getApiFamilyType());
+
+                List<String> apiEndpoints = apiResource.getApiDiscoveryEndpoints().stream()
+                        .map(api -> api.getApiEndpoint().substring(api.getApiEndpoint().lastIndexOf("/") + 1))
+                        .collect(Collectors.toList());
+
+                availableApiEndpointResponse.setAvailableEndpoints(apiEndpoints);
+            }
+        }
+
+        return availableApiEndpointResponse;
+    }
+
+    public List<AvailableApiEndpointResponse> createAvailableEndpoint(List<Participant> participants,
+                                                                      String apiFamilyType) {
+        return participants.stream()
+                .map(participant -> createAvailableEndpoint(participant, apiFamilyType))
+                .collect(Collectors.toList());
+    }
+
     private ApiDiscoveryEndpointResponse createApiDiscoveryEndpointResponse(ApiDiscoveryEndpoint apiDiscoveryEndpoint) {
         ApiDiscoveryEndpointResponse apiDiscoveryEndpointResponse = new ApiDiscoveryEndpointResponse();
 

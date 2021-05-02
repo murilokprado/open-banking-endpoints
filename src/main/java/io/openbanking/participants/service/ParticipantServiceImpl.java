@@ -4,6 +4,7 @@ import feign.FeignException;
 import io.openbanking.participants.ParticipantClient;
 import io.openbanking.participants.ParticipantFactory;
 import io.openbanking.participants.payload.ApiResource;
+import io.openbanking.participants.payload.AvailableApiEndpointResponse;
 import io.openbanking.participants.payload.Participant;
 import io.openbanking.participants.payload.ParticipantResponse;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,17 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
+    public List<AvailableApiEndpointResponse> getAvailableApiEndpointByApiFamilyType(String apiFamilyType) {
+        List<Participant> participants = getParticipants();
+
+        if (apiFamilyType != null) {
+            participants = getParticipantsByApiFamilyTypes(apiFamilyType, participants);
+        }
+
+        return participantFactory.createAvailableEndpoint(participants, apiFamilyType);
+    }
+
+    @Override
     public List<Participant> getParticipants() {
         try {
             return participantClient.getParticipants();
@@ -51,13 +63,17 @@ public class ParticipantServiceImpl implements ParticipantService {
         List<Participant> participants = getParticipants();
 
         if (apiFamilyType != null) {
-            participants = participants.stream()
-                    .filter(p -> p.getAuthorisationServers().stream()
-                            .flatMap(a -> a.getApiResources().stream())
-                            .anyMatch(api -> api.getApiFamilyType().equals(apiFamilyType)))
-                    .collect(Collectors.toList());
+            participants = getParticipantsByApiFamilyTypes(apiFamilyType, participants);
         }
 
         return participantFactory.create(participants, apiFamilyType);
+    }
+
+    private List<Participant> getParticipantsByApiFamilyTypes(String apiFamilyType, List<Participant> participants) {
+        return participants.stream()
+                .filter(p -> p.getAuthorisationServers().stream()
+                        .flatMap(a -> a.getApiResources().stream())
+                        .anyMatch(api -> api.getApiFamilyType().equals(apiFamilyType)))
+                .collect(Collectors.toList());
     }
 }
