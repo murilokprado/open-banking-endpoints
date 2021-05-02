@@ -2,6 +2,7 @@ package io.openbanking.participants;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
+import io.openbanking.participants.payload.AvailableApiEndpointResponse;
 import io.openbanking.participants.payload.Participant;
 import io.openbanking.participants.payload.ParticipantResponse;
 import io.openbanking.participants.service.ParticipantService;
@@ -22,6 +23,11 @@ public class ParticipantResolver {
     @GraphQLQuery
     public List<String> apiFamilyTypes() {
         return participantService.getApiFamilyTypes();
+    }
+
+    @GraphQLQuery
+    public List<AvailableApiEndpointResponse> availableApiEndpoints(String apiFamilyType) {
+        return participantService.getAvailableApiEndpointByApiFamilyType(apiFamilyType);
     }
 
     @GraphQLQuery

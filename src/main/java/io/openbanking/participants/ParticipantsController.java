@@ -1,5 +1,6 @@
 package io.openbanking.participants;
 
+import io.openbanking.participants.payload.AvailableApiEndpointResponse;
 import io.openbanking.participants.payload.Participant;
 import io.openbanking.participants.payload.ParticipantResponse;
 import io.openbanking.participants.service.ParticipantService;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,6 +22,18 @@ public class ParticipantsController {
 
     public ParticipantsController(ParticipantService participantService) {
         this.participantService = participantService;
+    }
+
+    @ApiOperation("Retornar as informações relevantes dos participantes")
+    @GetMapping("/api_family_types")
+    public List<String> getApiFamilyTypes() {
+        return participantService.getApiFamilyTypes();
+    }
+
+    @ApiOperation("Retornar os endpoints disponíveis da api pelo tipo")
+    @GetMapping("/available_api_endpoints")
+    public List<AvailableApiEndpointResponse> getAvailableApiEndpointByApiFamilyType(String apiFamilyType) {
+        return participantService.getAvailableApiEndpointByApiFamilyType(apiFamilyType);
     }
 
     @ApiOperation("Retorna os participantes do openbanking")
@@ -35,13 +49,7 @@ public class ParticipantsController {
 
     @ApiOperation("Retorna as informações relevantes dos participantes")
     @GetMapping("/relevant_fields")
-    public List<ParticipantResponse> participantsRelevantFields(String apiFamilyType) {
+    public List<ParticipantResponse> participantsRelevantFields(@RequestParam(required = false) String apiFamilyType) {
         return participantService.getParticipantsRelevantFields(apiFamilyType);
-    }
-
-    @ApiOperation("Retornar as informações relevantes dos participantes")
-    @GetMapping("/api_family_types")
-    public List<String> getApiFamilyTypes() {
-        return participantService.getApiFamilyTypes();
     }
 }

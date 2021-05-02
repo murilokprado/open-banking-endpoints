@@ -24,13 +24,16 @@ public class ParticipantFactoryTest {
     private final static String DEVELOPER_PORTAL_URI = "https://api.sulcrediouro.com.br/open-banking/naoseaplica";
     private final static String API_FAMILY_TYPE = "channels";
     private final static Integer API_VERSION = 1;
-    private final static String API_ENDPOINT = "https://api.sulcrediouro.com.br/open-banking/channels/v1/branches";
+    private final static String API_ENDPOINT_ONE = "https://api.sulcrediouro.com.br/open-banking/channels/v1/branches";
+    private final static String API_ENDPOINT_BRANCHES = "branches";
+    private final static String API_ENDPOINT_TWO = "https://api.sulcrediouro.com.br/open-banking/channels/v1/electronic-channels";
+    private final static String API_ENDPOINT_ELECTRONIC = "electronic-channels";
 
     @InjectMocks
-    ParticipantFactory participantFactory;
+    private ParticipantFactory participantFactory;
 
     @Mock
-    Participant participant;
+    private Participant participant;
 
     @Mock
     private AuthorisationServer authorisationServer;
@@ -42,7 +45,10 @@ public class ParticipantFactoryTest {
     private ApiResource apiResource;
 
     @Mock
-    private ApiDiscoveryEndpoint apiDiscoveryEndpoint;
+    private ApiDiscoveryEndpoint apiDiscoveryEndpointOne;
+
+    @Mock
+    private ApiDiscoveryEndpoint apiDiscoveryEndpointTwo;
 
     @Test
     public void shouldCreate() {
@@ -58,8 +64,8 @@ public class ParticipantFactoryTest {
         when(authorisationServer.getApiResources()).thenReturn(List.of(apiResource));
         when(apiResource.getApiFamilyType()).thenReturn(API_FAMILY_TYPE);
         when(apiResource.getApiVersion()).thenReturn(API_VERSION);
-        when(apiResource.getApiDiscoveryEndpoints()).thenReturn(List.of(apiDiscoveryEndpoint));
-        when(apiDiscoveryEndpoint.getApiEndpoint()).thenReturn(API_ENDPOINT);
+        when(apiResource.getApiDiscoveryEndpoints()).thenReturn(List.of(apiDiscoveryEndpointOne));
+        when(apiDiscoveryEndpointOne.getApiEndpoint()).thenReturn(API_ENDPOINT_ONE);
 
         ParticipantResponse participantResponse = participantFactory.create(participant, null);
 
@@ -84,6 +90,29 @@ public class ParticipantFactoryTest {
 
         ApiDiscoveryEndpointResponse apiDiscoveryEndpointResponse = apiResourceResponse.getApiDiscoveryEndpoints().get(0);
 
-        assertThat(apiDiscoveryEndpointResponse.getApiEndpoint()).isEqualTo(API_ENDPOINT);
+        assertThat(apiDiscoveryEndpointResponse.getApiEndpoint()).isEqualTo(API_ENDPOINT_ONE);
+    }
+
+    @Test
+    public void createAvailableEndpoint() {
+        when(participant.getOrganisationId()).thenReturn(ORGANISATION_ID);
+        when(participant.getAuthorisationServers()).thenReturn(List.of(authorisationServer));
+        when(authorisationServer.getCustomerFriendlyName()).thenReturn(CUSTOMER_FRIENDLY_NAME);
+        when(authorisationServer.getApiResources()).thenReturn(List.of(apiResource));
+        when(apiResource.getApiFamilyType()).thenReturn(API_FAMILY_TYPE);
+        when(apiResource.getApiDiscoveryEndpoints()).thenReturn(List.of(apiDiscoveryEndpointOne, apiDiscoveryEndpointTwo));
+        when(apiDiscoveryEndpointOne.getApiEndpoint()).thenReturn(API_ENDPOINT_ONE);
+        when(apiDiscoveryEndpointTwo.getApiEndpoint()).thenReturn(API_ENDPOINT_TWO);
+
+        AvailableApiEndpointResponse availableApiEndpointResponse = participantFactory
+                .createAvailableEndpoint(participant, null);
+
+        assertThat(availableApiEndpointResponse.getOrganisationId()).isEqualTo(ORGANISATION_ID);
+        assertThat(availableApiEndpointResponse.getCustomerFriendlyName()).isEqualTo(CUSTOMER_FRIENDLY_NAME);
+        assertThat(availableApiEndpointResponse.getApiFamilyType()).isEqualTo(API_FAMILY_TYPE);
+        assertThat(availableApiEndpointResponse.getAvailableEndpoints())
+                .isNotEmpty()
+                .hasSize(2)
+                .containsExactly(API_ENDPOINT_BRANCHES, API_ENDPOINT_ELECTRONIC);
     }
 }

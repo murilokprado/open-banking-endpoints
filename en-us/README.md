@@ -7,7 +7,7 @@ Objective of this project is make easier endpoint search about Open Banking in B
 From a dev to another.
 
 ## Oficial doc from OpenBanking Brazil
-[Open Banking Brasil](https://openbankingbrasil.org.br/?cookie=true)
+[Open Banking Brasil](https://openbanking-brasil.github.io/areadesenvolvedor/)
 
 ## Developers API companies
 |  | Name |  Developers API

@@ -10,7 +10,7 @@ De um dev para outro.
 Lembrando que estamos em construção e provavelmente não teremos todos endpoints ainda, por isso é de mega importância a contribuição da comunidade :construction_worker:
 
 ## Documentação oficial do Open Banking Brasil
-[Open Banking Brasil](https://openbankingbrasil.org.br/?cookie=true)
+[Open Banking Brasil](https://openbanking-brasil.github.io/areadesenvolvedor)
 
 ## APIs para desenvolvedores das companias
 |  | Nome |  API desenvolvedores
@@ -40,7 +40,7 @@ Aqui você irá encontrar os endpoints da instituições financeiras referentes 
 ## Contribuição
 Para melhorarmos a informação gostaria de contar com a contribuição da comunidade, assim podemos criar um ambiente onde irá facilitar o nosso dia-a-dia como desenvolvedores e irá estimular a disseminação do conhecimento. Sinta-se livre para contribuir e ajudar, é isso que mantêm nossa comunidade em crescimento!
 
-## Rodando a aplicação
+## Execução local :lock:
 Para rodar a aplicação basta ter instalado o Java 11, maven e o Docker.
 
 Comando:
@@ -48,20 +48,16 @@ Comando:
 
 Este comando irá compilar e criar a imagem docker e startar o container.
 
-## Evolução
-Pode ser disponibilizado também neste repositório algo como uma HUB de dados (provedor) de links, 
-listando quais bancos e quais seus endpoints.
-
-### Documentação da API :memo:
+## Documentação da API :memo:
 Está sendo utilizado o Swagger para documentar esta API. 
 Para acessar, suba o servidor e acesse o link [localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-### GraphQLAPI
+## GraphQLAPI
 Neste projeto foi implementado o GraphQL para facilitar o acesso das informação à um possível frontend.
 Está disponível um arquivo [insomnia.json](insomnia.json), onde é possível efetuar o upload das requests ao 
 [Insomnia](https://insomnia.rest/download/).
 
-## Acessando a aplicação publicada
+## Acessando a aplicação publicada :globe_with_meridians:
 [Swagger on Heroku](https://openbanking-br.herokuapp.com/swagger-ui/index.html#/participants-controller/getParticipantsUsingGET)
 
 ## Licença
